@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <%# <link rel='stylesheet' href='/stylesheets/style.css'>%>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <div class="jumbotron">
+    <div class="container" style="max-width: 30%;">
+      <h1 style="text-align: center;">
+        <%= title %>
+      </h1>
+
+      <table class="table table-bordered" style="border-width: 4px; border-color: #505050;" id="facture">
+        <% var total=0; %>
+          <% Object.keys(mytable).forEach(function(key) { switch (key) { case 'typePizza' : %>
+            <tbody>
+              <tr>
+                <td>
+                  <%= mytable[key] %>
+                </td>
+                <td>
+                  <% switch (mytable[key]) { case 'Hawaïenne' : %>
+                    7.00$
+                    <% total +=7; break; case 'All Dressed' : %>
+                      8.10$
+                      <% total +=8.10; break; case 'Sicilienne' : %>
+                        6.30$
+                        <% total +=6.30; break; default: break; } %>
+                </td>
+              </tr>
+              <% break; case 'taille' : %>
+                <tr>
+                  <td>
+                    <%= mytable[key] %>
+                  </td>
+                  <td>
+                    <% switch (mytable[key]) { case 'Small' : %>
+                      X0.8
+                      <% total=total*0.8; break; case 'Medium' : %>
+                        X1.0
+                        <% break; case 'Large' : %>
+                          X1.2
+                          <% total=total * 1.2; break; default: break; } %>
+                  </td>
+                </tr>
+                <% break; case 'ingredient1' : case 'ingredient2' : case 'ingredient3' : %>
+                  <tr>
+                    <td>
+                      <%= mytable[key] %>
+                    </td>
+                    <td>
+                      +0.50$
+                      <% total +=0.5; %>
+                    </td>
+                  </tr>
+                  <% break; %>
+
+                    <% case 'quantite' : %>
+                      <tr>
+                        <td>
+                          Quantité
+                        </td>
+                        <td>
+                          <%= mytable[key] %>
+                            <% total *=mytable[key]; %>
+                        </td>
+                      </tr>
+                      <% break; %>
+
+
+
+                        <% default: %>
+                          <% break; } }); %>
+                            <tr>
+                              <td style="text-align: right; border-top-color: #505050; border-top-width: 2px;">
+                                Total avant taxes
+                              </td>
+                              <td style="border-top-color: #505050; border-top-width: 2px;">
+                                <%= Number.parseFloat(total).toFixed(2) %> $
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="text-align: right">
+                                Total après taxes
+                              </td>
+                              <td>
+                                <%= Number.parseFloat(total * 1.14975).toFixed(2) %> $
+                              </td>
+                            </tr>
+            </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+
+</html>

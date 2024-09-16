@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+  <form method="post">
+    QUEL TYPE DE PIZZA ? <br>
+    <input type="radio" id="hawaienne" name="typePizza" value="Hawaïenne">
+    <label for="hawaienne">Hawaïenne</label><br>
+    <input type="radio" id="all_dressed" name="typePizza" value="All Dressed">
+    <label for="all_dressed">All Dressed</label><br>
+    <input type="radio" id="sicilienne" name="typePizza" value="Sicilienne">
+    <label for="sicilienne">Sicilienne</label>
+    <br><br>
+    QUELLE TAILLE ? <br>
+    <select id="taille" name="taille">
+      <option value="Small">Small</option>
+      <option value="Medium">Medium</option>
+      <option value="Large">Large</option>
+    </select>
+    <br><br>
+    QUELS INGRÉDIENTS SUPPLÉMENTAIRES ? <br>
+    <input type="checkbox" id="ingredient" name="ingredient1" value="Pepperoni">
+    <label for="ingredient"> Pepperoni</label><br>
+    <input type="checkbox" id="ingredient" name="ingredient2" value="Mozzarella">
+    <label for="ingredient"> Mozzarella</label><br>
+    <input type="checkbox" id="ingredient" name="ingredient3" value="Oeuf">
+    <label for="ingredient"> Oeuf</label>
+    <br><br>
+    QUELLE QUANTITÉ ? <br>
+    <input type="number" id="quantite" name="quantite" min="1" max="99" value="1">
+    <br><br>
+    QUELLE ADRESSE ? <br>
+    <textarea id="adresse" name="adresse" rows="2" cols="30" style="resize: none;"></textarea>
+    <br><br>
+    CODE POSTAL ? EX: "A1A 1A1" <br>
+    <input type="text" id="codePostal" name="codePostal"
+      pattern="^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\s\d[ABCEGHJ-NPRSTV-Z]\d$"><br>
+    <br><br>
+    QUEL EST VOTRE NOM ? <br>
+    <input type="text" id="nom" name="nom"><br>
+    <br><br>
+    QUEL EST VOTRE PRÉNOM ? <br>
+    <input type="text" id="prenom" name="prenom"><br>
+    <br><br>
+    QUEL EST VOTRE TÉLÉPHONE ? <br>
+    <input type="tel" id="phone" name="phone" placeholder='EX: "123-456-7890"' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+      required autocomplete="tel"><br>
+    <br><br>
+    QUEL EST VOTRE COURRIEL ? <br>
+    <input type="email" id="email" name="email" placeholder='EX: "billgates@hotmail.com"' required
+      pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"><br>
+    <br><br>
+    QUEL EST VOTRE MODE DE PAIEMENT ? <br>
+    <select id="paiement" name="paiement">
+      <option value="comptant">Comptant</option>
+      <option value="credit">Crédit</option>
+      <option value="debit">Débit</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Confirmer ma commande">
+    <script>
+      function phoneMask() {
+        var num = $(this).val().replace(/\D/g, '');
+        $(this).val(num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10));
+      }
+      $('[type="tel"]').keyup(phoneMask);
+    </script>
+  </form>
+
+</body>
+
+
+</html>
