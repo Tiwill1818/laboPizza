@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 router.post('/', function (req, res, next) {
-  res.render('confirmation', { title: 'Facture', mytable: req.body });
+  res.render('confirmation', { title: 'Facture', mytable: req.body, adr: req.body.adresse, codePost: req.body.codePostal});
   //console.log(req.body);
 });
 

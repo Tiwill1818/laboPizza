@@ -18,6 +18,151 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script>
+      /**
+       * @license
+       * Copyright 2019 Google LLC. All Rights Reserved.
+       * SPDX-License-Identifier: Apache-2.0
+       */
+      function initMap() {
+        const bounds = new google.maps.LatLngBounds();
+        const markersArray = [];
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 55.53, lng: 9.4 },
+          zoom: 10,
+
+        });
+        // initialize services
+        const geocoder = new google.maps.Geocoder();
+        const service = new google.maps.DistanceMatrixService();
+        const directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setOptions(
+          {
+            polylineOptions: {
+              strokeColor: '#0088FF',
+              strokeWeight: 6,
+              strokeOpacity: 0.8
+            },
+          }
+        );
+
+        // build request
+        directionsRenderer.setMap(map);
+        const origin2 = "100 Rue Duquet, J7E 3G6";
+        const destinationA = "<%= adr %>" + ", " + "<%= codePost %>";
+        const request = {
+          origins: [origin2],
+          destinations: [destinationA],
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC,
+          avoidHighways: false,
+          avoidTolls: false,
+        };
+
+        directionsService
+          .route({
+            origin: origin2,
+            destination: destinationA,
+            travelMode: google.maps.TravelMode.DRIVING,
+            avoidHighways: false,
+            avoidTolls: false,
+
+          })
+          .then((response) => {
+
+            directionsRenderer.setDirections(response);
+          })
+          .catch((e) => window.alert("Directions request failed due to " + status));
+
+
+        // get distance matrix response
+        service.getDistanceMatrix(request).then((response) => {
+          // put response
+          document.getElementById("response").innerText = response.rows[0].elements[0].distance.text + " - " + response.rows[0].elements[0].duration.text;
+
+          // show on map
+          /*const originList = response.originAddresses;
+          const destinationList = response.destinationAddresses;
+  
+          deleteMarkers(markersArray);
+  
+          const showGeocodedAddressOnMap = (asDestination) => {
+            const handler = ({ results }) => {
+              map.fitBounds(bounds.extend(results[0].geometry.location));
+              markersArray.push(
+                new google.maps.Marker({
+                  map,
+                  position: results[0].geometry.location,
+                })
+              );
+            };
+            return handler;
+          };
+  
+          for (let i = 0; i < originList.length; i++) {
+            const results = response.rows[i].elements;
+  
+            geocoder
+              .geocode({ address: originList[i] })
+              .then(showGeocodedAddressOnMap(false));
+  
+            for (let j = 0; j < results.length; j++) {
+              geocoder
+                .geocode({ address: destinationList[j] })
+                .then(showGeocodedAddressOnMap(true));
+            }
+          }*/
+        });
+
+      }
+
+      function deleteMarkers(markersArray) {
+        for (let i = 0; i < markersArray.length; i++) {
+          markersArray[i].setMap(null);
+        }
+
+        markersArray = [];
+      }
+
+      window.initMap = initMap;
+    </script>
+    <style>
+      /**
+           * @license
+           * Copyright 2019 Google LLC. All Rights Reserved.
+           * SPDX-License-Identifier: Apache-2.0
+           */
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 4px;
+        padding: 4px;
+      }
+
+
+
+      #sidebar {
+        flex-basis: 15rem;
+        flex-grow: 1;
+        padding: 1rem;
+        max-width: 30rem;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+
+      #map {
+        flex-basis: 0;
+        flex-grow: 4;
+        height: 100%;
+      }
+
+      #sidebar {
+        flex-direction: column;
+      }
+    </style>
 </head>
 
 <body>
@@ -107,7 +252,20 @@
             </tbody>
       </table>
     </div>
+
+
   </div>
+  <div id="container"
+    style="padding-bottom: 20px; margin:auto; height: 50%; width: 50%; display: flex; justify-content: center; align-items: center; ">
+    <div id="map"></div>
+    <div id="sidebar">
+      <h3 style="flex-grow: 0">Trajet</h3>
+      <pre style="flex-grow: 1" id="response"></pre>
+    </div>
+  </div>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhdbD1mMV9S0T4SI_LJFYoCO7L1fTZ_YU&callback=initMap&v=weekly&solution_channel=GMP_CCS_distancematrix_v2"
+    defer></script>
 </body>
 
 
